@@ -44,7 +44,7 @@ class pkg_config(object):
     self.compile_args += ['-std=c++11']
     if win32_build:
         self.compile_args.append('-DWIN32')
-    self.include_dirs = [ x for x in '$<TARGET_PROPERTY:SpaceVecAlg::SpaceVecAlg,INTERFACE_INCLUDE_DIRECTORIES>;$<TARGET_PROPERTY:sch-core::sch-core,INCLUDE_DIRECTORIES>'.split(';') if len(x) ]
+    self.include_dirs = [ x for x in '$<TARGET_PROPERTY:SpaceVecAlg::SpaceVecAlg,INTERFACE_INCLUDE_DIRECTORIES>;$<TARGET_PROPERTY:sch-core::sch-core,INTERFACE_INCLUDE_DIRECTORIES>'.split(';') if len(x) ]
     self.include_dirs.append('@Boost_INCLUDE_DIR@')
     self.include_dirs.append(this_path + '/include')
     self.include_dirs = filter(len, self.include_dirs)
@@ -80,7 +80,7 @@ extensions = cythonize(extensions)
 
 setup(
     name = 'sch',
-    version='1.0.0-{}'.format(version_hash),
+    version='@PROJECT_VERSION@-{}'.format(version_hash),
     ext_modules = extensions,
     packages = packages,
     package_data = { 'sch': data }

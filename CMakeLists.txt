@@ -4,6 +4,9 @@
 
 cmake_minimum_required(VERSION 2.8)
 
+project(sch-core-python)
+set(PROJECT_VERSION 1.0.1)
+
 find_package(SpaceVecAlg REQUIRED)
 find_package(sch-core REQUIRED)
 
@@ -124,13 +127,18 @@ set(BINDINGS_SOURCES
   tests/test_sch.py
 )
 
-if(${PYTHON_BINDING_BUILD_PYTHON2_AND_PYTHON3})
-  ADD_BINDINGS("python2" "pip2" "${BINDINGS_SOURCES}")
-  ADD_BINDINGS("python3" "pip3" "${BINDINGS_SOURCES}")
-elseif(${PYTHON_BINDING_FORCE_PYTHON3})
-  ADD_BINDINGS("python3" "pip3" "${BINDINGS_SOURCES}")
-elseif(${PYTHON_BINDING_FORCE_PYTHON2})
-  ADD_BINDINGS("python2" "pip2" "${BINDINGS_SOURCES}")
+if(${PYTHON_BINDING})
+  if(${PYTHON_BINDING_BUILD_PYTHON2_AND_PYTHON3})
+    ADD_BINDINGS("python2" "pip2" "${BINDINGS_SOURCES}")
+    ADD_BINDINGS("python3" "pip3" "${BINDINGS_SOURCES}")
+  elseif(${PYTHON_BINDING_FORCE_PYTHON3})
+    ADD_BINDINGS("python3" "pip3" "${BINDINGS_SOURCES}")
+  elseif(${PYTHON_BINDING_FORCE_PYTHON2})
+    ADD_BINDINGS("python2" "pip2" "${BINDINGS_SOURCES}")
+  else()
+    ADD_BINDINGS("python" "pip" "${BINDINGS_SOURCES}")
+  endif()
 else()
-  ADD_BINDINGS("python" "pip" "${BINDINGS_SOURCES}")
+  enable_testing()
+  install(CODE "message(\"Nothing to install\")")
 endif()
